@@ -16,9 +16,9 @@ From a user's perspective the target Owlauth experience is:
 Owlauth consists of four possible transactions:
 
 1. Discovery.  Applications request an email address from the user (<user>@<domain>) and then looks for a JSON file at the URL `https://<domain>/.well-known/owlauth`.  This JSON file provides the address and port of the Owlauth server.
-1. Login.  Applications do a GET HTTPS operation on the URL `https://<owlauthserver:port>/login/<applicationName>/<user>@<domain>`.  This results in login instructions for the user and a token.
-1. Authentication.  Applications POST the token from Login to the url `https://<owlauthserver:port>/authenticate/`.  The Owlauth server will authenticate the user (e.g. through email) and return to the application an auth token and validity period.
-1. Refresh.  When an authtoken has been held for longer than the validity period, applications POST it to the URL `https://<owlauthserver:port>/refresh/`.  The Owlauth server will provide a new token and validity period, or stipulate the application needs to carry out a new login.
+1. Login.  Applications POST the user's email address and the name of the service to the URL `https://<owlauthserver:port>/login`.  This results in login instructions for the user and a token.
+1. Authentication.  Applications POST the token from Login to the url `https://<owlauthserver:port>/authenticate`.  The Owlauth server will authenticate the user (e.g. through email) and return to the application an auth token and validity period.
+1. Refresh.  When an authtoken has been held for longer than the validity period, applications POST it to the URL `https://<owlauthserver:port>/refresh`.  The Owlauth server will provide a new token and validity period, or stipulate the application needs to carry out a new login.
 
 ##  Owlauth stages
 
@@ -28,14 +28,15 @@ To discover whether a user's organisation supports Owlauth, the application will
 
 ```{
 	"server": "example.com:3030"
-}```
+}
+```
 
 ### Login
 
-Once the application has determine the location of the Owlauth server, it will then perform a GET on the URL `https://<owlauthserver:port>/login/<applicationName>/<user>@<domain>`, where the parameters are:
+Once the application has determine the location of the Owlauth server, it will then perform a POST on the URL `https://<owlauthserver:port>/login`, a JSON object with the following attributes:
 
- * `applicationName` - A URL Encoded name of the application requesting the login.  This must be no longer than 80 characters.
- * `<user>@<domain>` - A URL Encoded string of the email address provided by the user.
+ * `Service` - The name of the application requesting the login.  This must be no longer than 80 characters.
+ * `User` - The email address provided by the user.
 
 The Owlauth server will return a JSON object with the following attributes:
 
@@ -49,7 +50,8 @@ The Owlauth server will return a JSON object with the following attributes:
 	"LoginText": "Please check your phone for an authentication request with this login phrase.",
 	"LoginPhrase": "Apple Bear",
 	"LoginToken": "A4BHJL25AM"
-}```
+}
+```
 
 ### Authentication
 
@@ -75,7 +77,8 @@ A successful authentication will result in a JSON object with the following attr
 ```{
 	"AuthenticatedToken": "ZCXVNASDF8945AS",
 	"ValidityDuration": 3600
-}```
+}
+```
 
 ### Refresh
 
@@ -99,7 +102,8 @@ In the event of an error the Login, Authenticate and Refresh end points will, in
 ```{
 	"ErrorCode": "APPLICATION_NAME_TOO_LONG",
 	"ErrorDescription": "The application name provided is too long."
-}```
+}
+```
 
 The following table defines standard ErrorCode values and suggested application behaviour.
 
