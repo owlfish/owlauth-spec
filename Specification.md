@@ -26,7 +26,8 @@ Owlauth consists of four possible transactions:
 
 To discover whether a user's organisation supports Owlauth, the application will carry out a GET on the URL `https://<domain>/.well-known/owlauth`.  The resulting JSON file has a single attribute `server` containing the location of the Owlauth server for this domain in the format `hostname:port` for example:
 
-```{
+```
+{
 	"server": "example.com:3030"
 }
 ```
@@ -46,7 +47,8 @@ The Owlauth server will return a JSON object with the following attributes:
  
  For example:
 
-```{
+```
+{
 	"LoginText": "Please check your phone for an authentication request with this login phrase.",
 	"LoginPhrase": "Apple Bear",
 	"LoginToken": "A4BHJL25AM"
@@ -74,7 +76,8 @@ A successful authentication will result in a JSON object with the following attr
  
  For example:
 
-```{
+```
+{
 	"AuthenticatedToken": "ZCXVNASDF8945AS",
 	"ValidityDuration": 3600
 }
@@ -99,7 +102,8 @@ In the event of an error the Login, Authenticate and Refresh end points will, in
  
  For example:
 
-```{
+```
+{
 	"ErrorCode": "APPLICATION_NAME_TOO_LONG",
 	"ErrorDescription": "The application name provided is too long."
 }
