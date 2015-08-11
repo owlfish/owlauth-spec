@@ -36,7 +36,7 @@ To discover whether a user's organisation supports Owlauth, the application will
 
 Once the application has determine the location of the Owlauth server, it will then perform a POST on the URL `https://<owlauthserver:port>/login`, a JSON object with the following attributes:
 
- * `Service` - The name of the application requesting the login.  This must be no longer than 80 characters.
+ * `ApplicationName` - The name of the application requesting the login.  This must be no longer than 80 characters.
  * `User` - The email address provided by the user.
 
 The Owlauth server will return a JSON object with the following attributes:
