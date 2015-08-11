@@ -16,7 +16,7 @@ From a user's perspective the target Owlauth experience is:
 Owlauth consists of four possible transactions:
 
 1. Discovery.  Applications request an email address from the user (<user>@<domain>) and then looks for a JSON file at the URL `https://<domain>/.well-known/owlauth`.  This JSON file provides the address and port of the Owlauth server.
-1. Login.  Applications POST the user's email address and the name of the service to the URL `https://<owlauthserver:port>/login`.  This results in login instructions for the user and a token.
+1. Login.  Applications POST the user's email address in a JSON object to the URL `https://<owlauthserver:port>/login`.  This results in login instructions for the user and a token.
 1. Authentication.  Applications POST the token from Login to the url `https://<owlauthserver:port>/authenticate`.  The Owlauth server will authenticate the user (e.g. through email) and return to the application an auth token and validity period.
 1. Refresh.  When an authtoken has been held for longer than the validity period, applications POST it to the URL `https://<owlauthserver:port>/refresh`.  The Owlauth server will provide a new token and validity period, or stipulate the application needs to carry out a new login.
 
@@ -34,9 +34,8 @@ To discover whether a user's organisation supports Owlauth, the application will
 
 ### Login
 
-Once the application has determine the location of the Owlauth server, it will then perform a POST on the URL `https://<owlauthserver:port>/login`, a JSON object with the following attributes:
+Once the application has determine the location of the Owlauth server, it will then perform a POST on the URL `https://<owlauthserver:port>/login`, a JSON object with the following attribute:
 
- * `ApplicationName` - The name of the application requesting the login.  This must be no longer than 80 characters.
  * `User` - The email address provided by the user.
 
 The Owlauth server will return a JSON object with the following attributes:
@@ -113,7 +112,6 @@ The following table defines standard ErrorCode values and suggested application 
 
 |ErrorCode|Description|Behaviour
 ----------|-----------|----------
-|APPLICATION_NAME_TOO_LONG|The application name provided is too long.|This is an application defect.
 |AUTH_TIMEOUT|The user failed to authenticate within the given timeout.|Restart the sequence with a new Login request.
 |REFRESH_FAILED|The authentication token could not be refreshed and a new login sequence must be started.|Start a new Login sequence.
 |AUTH_DECLINED|The user declined the authentication request.|Present an error to the user and take no further action without user input.
