@@ -13,9 +13,9 @@ From a user's perspective the target Owlauth experience is:
 
 ## Overview
 
-Owlauth consists of four possible transactions:
+Owlauth consists of four transactions:
 
-1. Discovery.  Applications request an email address from the user (<user>@<domain>) and then looks for a JSON file at the URL `https://<domain>/.well-known/owlauth`.  This JSON file provides the address and port of the Owlauth server.
+1. Discovery.  Applications request an email address from the user (user@domain) and then looks for a JSON file at the URL `https://<domain>/.well-known/owlauth`.  This JSON file provides the address and port of the Owlauth server.
 1. Login.  Applications POST the user's email address in a JSON object to the URL `https://<owlauthserver:port>/login`.  This results in login instructions for the user and a token.
 1. Authentication.  Applications POST the token from Login to the url `https://<owlauthserver:port>/authenticate`.  The Owlauth server will authenticate the user (e.g. through email) and return to the application an auth token and validity period.
 1. Refresh.  When an authtoken has been held for longer than the validity period, applications POST it to the URL `https://<owlauthserver:port>/refresh`.  The Owlauth server will provide a new token and validity period, or stipulate the application needs to carry out a new login.
@@ -66,7 +66,7 @@ The Owlauth server will then carry out authentication of the user using one or m
  * Sending a notification to a pre-registered mobile application that requires a PIN to authenticate
  * Requesting the user to open an authentication application, protected by a traditional password mechanism, which displays authentication requests for approval
 
-The result of the POST may take 5 minutes to return and the application should set timeouts accordingly.  If the POST returns an error of AUTH_TIMEOUT, or the HTTPS connection is lost, the application must start with a new Login request.  The Owlauth server may choose to re-issue the same LoginPhrase and LoginToken at its discretion.
+The POST will take time to return as the user carries out the action required to authenticate.  If the user does not authenticate within 5 minutes, the Owlauth server may return the AUTH_TIMEOUT error.  If the POST returns an error of AUTH_TIMEOUT, or the HTTPS connection is lost, the application must start with a new Login request.  The Owlauth server may choose to re-issue the same LoginPhrase and LoginToken at its discretion.
 
 A successful authentication will result in a JSON object with the following attributes:
 
