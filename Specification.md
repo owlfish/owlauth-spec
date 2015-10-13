@@ -32,6 +32,12 @@ To discover whether a user's organisation supports Owlauth, the application will
 }
 ```
 
+#### Fallback Discovery
+
+In order to encourage the adoption of Owlauth, a fallback mechanism is provided for users who's organisation has not yet implemented Owlauth.  If the Discovery step above fails, a GET on the URL `https://owlauth.net/discover/<user>` where <user> is the URLEncoded email address of the user, must be carried out.
+
+If the user has created an owlauth.net account, a JSON file in the Discovery format above will be returned.  If the user has not registered, a 404 HTTP error code will be returned.
+
 ### Login
 
 Once the application has determine the location of the Owlauth server, it will then perform a POST on the URL `https://<owlauthserver:port>/login`, a JSON object with the following attribute:
