@@ -60,6 +60,8 @@ The Owlauth server will return a JSON object with the following attributes:
 }
 ```
 
+If the User is not registered with the Owlauth server, an USER_NOT_REGISTERED error will be returned at this stage.
+
 ### Authentication
 
 Immediately after completing the Login step, the application presents to the user both the LoginText and LoginPhrase.  Once these are shown to the user, and without any further action by the user, the application perfoms a POST on the url `https://<owlauthserver:port>/authenticate/` a JSON object with the following attribute:
@@ -118,6 +120,7 @@ The following table defines standard ErrorCode values and suggested application 
 
 |ErrorCode|Description|Behaviour
 ----------|-----------|----------
+|USER_NOT_REGISTERED|This user is not registered with the Owlauth server.|Prompt the user to register with Owlauth.net or authenticate using a different mechanism (e.g. password)
 |AUTH_TIMEOUT|The user failed to authenticate within the given timeout.|Restart the sequence with a new Login request.
 |REFRESH_FAILED|The authentication token could not be refreshed and a new login sequence must be started.|Start a new Login sequence.
 |AUTH_DECLINED|The user declined the authentication request.|Present an error to the user and take no further action without user input.
