@@ -32,7 +32,7 @@ To discover whether a user's organisation supports Owlauth, the application will
 }
 ```
 
-#### Fallback Discovery
+#### Fallback
 
 In order to encourage the adoption of Owlauth, a fallback mechanism is provided for users who's organisation has not yet implemented Owlauth.  If the Discovery step above fails, clients should instead use the server `api.owlauth.net:443` as the Owlauth server.
 
@@ -61,6 +61,8 @@ The Owlauth server will return a JSON object with the following attributes:
 ```
 
 If the User is not registered with the Owlauth server, an USER_NOT_REGISTERED error will be returned at this stage.
+
+The server used for the Login must be used for subsequent Authentication and Refresh stages.  I.e. a new Discovery stage should only be performed for a user if a new Login is going to be performed.
 
 ### Authentication
 
@@ -92,13 +94,13 @@ A successful authentication will result in a JSON object with the following attr
 
 ### Refresh
 
-Once an application has held an AuthenticatedToken for longer than the ValidityDuration, it must carry out a Refresh in order to obtain confirmation that the authentication provided is still valid.  Doing this provides the Owlauth server the opportunity to force a new Login sequence, or to continue with no user interaction.
+Once an application has held an AuthenticatedToken for longer than the ValidityDuration, it must attempt a Refresh in order to obtain confirmation that the authentication provided is still valid.  Doing this provides the Owlauth server the opportunity to force a new Login sequence, or to continue with no user interaction.
 
 To do the refresh, the application perfoms a POST on the url `https://<owlauthserver:port>/refresh/` a JSON object with the following attribute:
 
  * `AuthenticatedToken` - The previously issued AuthenticatedToken to be refreshed.
  
-A successful refresh will result in a new JSON object with new AuthenticatedToken and ValidityDuration values.
+A successful refresh will result in a new JSON object with new AuthenticatedToken and ValidityDuration values.  If the Owlauth server is not reachable, the application should treat the existing AuthenticatedToken as being valid for another 3600 seconds (one hour).
 
 ### Error Handling
 
@@ -111,8 +113,8 @@ In the event of an error the Login, Authenticate and Refresh end points will, in
 
 ```
 {
-	"ErrorCode": "APPLICATION_NAME_TOO_LONG",
-	"ErrorDescription": "The application name provided is too long."
+	"ErrorCode": "USER_NOT_REGISTERED",
+	"ErrorDescription": "This user is not registered with the Owlauth server."
 }
 ```
 
