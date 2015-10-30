@@ -34,7 +34,7 @@ To discover whether a user's organisation supports Owlauth, the application will
 
 #### Fallback
 
-In order to encourage the adoption of Owlauth, a fallback mechanism is provided for users who's organisation has not yet implemented Owlauth.  If the Discovery step above fails, clients should instead use the server `api.owlauth.net:443` as the Owlauth server.
+In order to encourage the adoption of Owlauth, a fallback mechanism is provided for users who's organisation has not yet implemented Owlauth.  If the Discovery step above fails, clients should provide users the option of logging in using Owlauth.net.  If the user chooses this option, the Owlauth server `api.owlauth.net:443` is used.  The fallback server should only be used if the user explicitly requests it.
 
 If the user has not registered with Owlauth.net, a USER_NOT_REGISTERED error will be returned in the Login stage.
 
